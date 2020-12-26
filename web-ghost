@@ -1,0 +1,29 @@
+config:
+  user.user-data: |
+    #cloud-config
+    package_update: true
+    package_upgrade: true
+    package_reboot_if_required: true
+    packages:
+      - git
+      - python3-pip
+      - nginx-full
+    runcmd:
+      - [ snap, install, node, --classic ]
+      - [ npm, install, ghost-cli@latest, -g ]
+      - [ mkdir, -p, /var/www/sudoedit ]
+      - [ useradd, -r, ghost ]
+      - [ chmod, 0755, /var/www/sudoedit ]
+      - [ chown, ubuntu:ubuntu, /var/www/sudoedit ]
+description: web-ghost build
+devices:
+  eth0:
+    name: eth0
+    network: lxdbr0
+    type: nic
+  root:
+    path: /
+    pool: default
+    type: disk
+name: web-ghost
+used_by: []
